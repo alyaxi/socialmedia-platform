@@ -37,7 +37,7 @@ const authController = {
       // res.cookie('refresh_token', tokens.refreshToken, {...(process.env.COOKIE_DOMAIN && {domain: process.env.COOKIE_DOMAIN}) , httpOnly: true,sameSite: 'none', secure: true}
 
       // Save refresh token in your database or cache
-      
+
       res.cookie("refresh_token", refreshToken, { httpOnly: true });
       res.json({ accessToken, refreshToken });
     } catch (error) {

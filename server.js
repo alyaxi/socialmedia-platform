@@ -1,5 +1,3 @@
-// server.js
-// const errorHandler = require('./middleware/errorMiddleware')
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -30,7 +28,7 @@ const PORT = process.env.PORT || 8000;
 db.sequelize.sync().then(() => {
   // console.log('Drop and Resync Db');
   console.log("DATABASE CONNECTED , Drop and Resync Db");
-  // initial();
+
 });
 db.sequelize
   .authenticate()
@@ -49,5 +47,5 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
  
   res.send("Hello World");
-  // res.sendFile(__dirname + './app/view/index.html');
+
 });
