@@ -2,7 +2,7 @@ const { user } = require('../models');
 
 
 const userController = {
-  async getUserProfile(req, res) {
+  async getUserProfile(req, res, next) {
     try {
       const User = await user.findByPk(req.user_id, {
         attributes: { exclude: ['password'] },
@@ -15,7 +15,8 @@ const userController = {
       res.json(User);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+      // res.status(500).json({ error: 'Internal server error' });
+      next(error)
     }
   },
 
