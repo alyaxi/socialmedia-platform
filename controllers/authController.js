@@ -6,7 +6,7 @@ const authConfig = require("../config/authConfig");
 
 const generateAccessToken = (user) => {
   return jwt.sign({ id: user.id }, authConfig.access_token, {
-    expiresIn: "1m",
+    expiresIn: "60m",
   });
 };
 
