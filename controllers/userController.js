@@ -4,7 +4,7 @@ const { user } = require('../models');
 const userController = {
   async getUserProfile(req, res) {
     try {
-      const User = await user.findByPk(req.userId, {
+      const User = await user.findByPk(req.user_id, {
         attributes: { exclude: ['password'] },
       });
 

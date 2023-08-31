@@ -22,9 +22,21 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   },
 });
 
+const models = {
+  User: require("./user")(sequelize, Sequelize),
+  Post: require("./post")(sequelize, Sequelize),
+  // Other models...
+};
+
+Object.values(models)
+  .filter(model => typeof model.associate === "function")
+  .forEach(model => model.associate(models));
+
+  
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("../models/user.js")(sequelize, Sequelize);
+db.user = models.User;
+db.post = models.Post;
 
 module.exports = db;

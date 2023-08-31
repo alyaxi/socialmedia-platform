@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const { user } = require("../models");
+const { user, Sequelize } = require("../models");
 const authConfig = require("../config/authConfig");
 
 const generateAccessToken = (user) => {
@@ -47,18 +47,26 @@ const authController = {
   },
   async register(req, res) {
     try {
-      const { username, password } = req.body;
-      const existingUser = await user.findOne({ where: { username } });
+      const { name, username, password, email, bio, avatar } = req.body;
+      const existingUser = await user.findOne({
+        where: {
+          [Sequelize.Op.or]: [{ username }, { email }],
+        },
+      });
 
       if (existingUser) {
-        return res.status(400).json({ error: "Username already exists" });
+        return res.status(400).json({ error: "Username or email already exists" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const newUser = await user.create({
+        name,
+        email,
         username,
         password: hashedPassword,
+        bio: bio || "",
+        avatar: avatar || "",
       });
 
       const accessToken = generateAccessToken(newUser);

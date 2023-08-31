@@ -9,6 +9,7 @@ const userRoute = require("./routes/user-route");
 const bodyParser = require("body-parser");
 const db = require("./models");
 const errorHandler = require("./middleware/errorHandle");
+const postRoutes = require("./routes/post-rotues")
 
 dotenv.config();
 const app = express();
@@ -22,24 +23,26 @@ app.use(errorHandler);
 
 app.use("/auth", authRoutes);
 app.use('/user', userRoute);
+app.use("/posts", postRoutes);
 
 const PORT = process.env.PORT || 8000;
 
-db.sequelize.sync().then(() => {
-  // console.log('Drop and Resync Db');
-  console.log("DATABASE CONNECTED , Drop and Resync Db");
 
-});
 db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.log("Error occured in connection" + err);
-  });
+.authenticate()
+.then(() => {
+  console.log("Connection has been established successfully.");
+})
+.catch((err) => {
+  console.log("Error occured in connection" + err);
+});
 // Load routes and middleware here
 
+db.sequelize.sync({ }).then(() => {
+  console.log("Database synced");
+}).catch(err => {
+  console.error("Error syncing database:", err);
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
